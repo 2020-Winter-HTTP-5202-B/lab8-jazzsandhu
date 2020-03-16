@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+<form action="" method="get">
+    <select id="country">
+
+    </select>
+</form>
+
+<div id="results">
+
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function(){
+        $.getJSON('country_offices.php', function(data){
+            //console.log($data);
+            var cont = "";
+            $.each(data,function(index, conty){
+                cont += "<option value ='"+conty.country +"'>" +conty.country +"</option>";
+            })
+            //console.log(cont);
+            $('#country').html(cont);
+
+        })
+        $('#country').change(function (){
+            selval = $('#country').val();
+            //console.log(selval);
+            $.getJSON('list_offices.php', {contry:selval}, function(listoffices){
+                off = "";
+                $.each(listoffices, function(index, listoffice){
+                    off += "<div class='d-flex flex-row bd-highlight mb-3'>" +
+                        "<div class='p-2 bd-highlight'><img src='"+listoffice.photo +"' alt='a image of the office' /></div>" +
+                        " <div class='p-2 bd-highlight' style='background-color: lightgrey'>Office Code:" +listoffice.officecode +
+                            "<br/>Address: " +listoffice.address +"<br/>City :" + listoffice.city + "<br/>Postal Code:" +listoffice.postalcode +
+                        "<br/>Phone:" + listoffice.phone + "</div></div>";
+                })
+                $('#results').html(off);
+            })
+
+
+        })
+    })
+</script>
+
+</body>
+</html>
